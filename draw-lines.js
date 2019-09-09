@@ -4,8 +4,8 @@ async function drawLines() {
     yAccessor = d => +d.points
     dateParser = d3.timeParse("%Y-%m-%d")
     xAccessor = d => dateParser(d.date)
+
     console.log(dataset[0])
-    console.log(xAccessor(dataset[81]))
 
     // Chart dimensions
     let dimensions = {
@@ -45,6 +45,8 @@ async function drawLines() {
     const xScale = d3.scaleTime()
         .domain(d3.extent(dataset, xAccessor))
         .range([0, dimensions.boundedWidth])
+    
+    console.log(d3.extent(dataset, xAccessor))
 
     console.log(xScale("2018-10-31"))
 
@@ -60,7 +62,8 @@ async function drawLines() {
         .attr("fill", "none")
         .attr("stroke", "af9358")
         .attr("stroke-width", 2)
-
+    
+    // Draw peripherals
 }
 
 drawLines()
