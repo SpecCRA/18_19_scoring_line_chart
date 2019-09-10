@@ -42,7 +42,7 @@ async function drawLines() {
         .domain(d3.extent(dataset, yAccessor))
         .range([dimensions.boundedHeight, 0])
 
-    const xScale = d3.scaleTime()
+    const xScale = d3.scaleUtc()
         .domain(d3.extent(dataset, xAccessor))
         .range([0, dimensions.boundedWidth])
     
@@ -50,7 +50,7 @@ async function drawLines() {
 
     console.log(xScale("2018-10-31"))
 
-    // Line for average would be neat
+    // Line for average points scored code here
     
     // Draw data
     const lineGenerator = d3.line()
