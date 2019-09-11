@@ -1,0 +1,8 @@
+{
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "plugins": ["react", "jsx-a11y", "import"],
+    "editor.formatOnSave": true,
+	"javascript.format.enable": false,
+	"prettier.eslintIntegration": true
+}

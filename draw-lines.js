@@ -1,11 +1,10 @@
 async function drawLines() {
     // Access data
-    const dataset  = await d3.csv("./2018_19_celtics_pts_data.csv")
-    yAccessor = d => +d.points
-    dateParser = d3.timeParse("%Y-%m-%d")
-    xAccessor = d => dateParser(d.date)
-
-    console.log(dataset[0])
+    const url = "https://raw.githubusercontent.com/SpecCRA/18_19_scoring_line_chart/master/2018_19_game_pts_data.csv"
+    const dataset  = await d3.csv(url, d3.autoType);
+    yAccessor = d => +d.points;
+    // dateParser = d3.timeParse("%Y-%m-%d")
+    xAccessor = d => d.date;
 
     // Chart dimensions
     let dimensions = {
@@ -46,21 +45,19 @@ async function drawLines() {
         .domain(d3.extent(dataset, xAccessor))
         .range([0, dimensions.boundedWidth])
     
-    console.log(d3.extent(dataset, xAccessor))
-
-    console.log(xScale("2018-10-31"))
-
     // Line for average points scored code here
+
+    // Monthly variance in shaded area upon hover
     
-    // Draw data
+    // Draw data    
     const lineGenerator = d3.line()
         .x(d => xScale(xAccessor(d)))
-        .y(d => yScale(yAccessor(d)))
+        .y(d => yScale(yAccessor(d)));
 
     const line = bounds.append("path")
         .attr("d", lineGenerator(dataset))
         .attr("fill", "none")
-        .attr("stroke", "af9358")
+        .attr("stroke", "black")
         .attr("stroke-width", 2)
     
     // Draw peripherals
