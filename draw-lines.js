@@ -3,13 +3,14 @@ async function drawLines() {
     const url = "https://raw.githubusercontent.com/SpecCRA/18_19_scoring_line_chart/master/2018_19_game_pts_data.csv"
     const dataset  = await d3.csv(url, d3.autoType);
     yAccessor = d => +d.points;
-    // dateParser = d3.timeParse("%Y-%m-%d")
     xAccessor = d => d.date;
+
+    console.log(d3.min(dataset, yAccessor))
 
     // Chart dimensions
     let dimensions = {
         width: window.innerWidth * 0.9,
-        height: 500,
+        height: 400,
         margin: {
             top: 15,
             right: 15,
@@ -61,6 +62,20 @@ async function drawLines() {
         .attr("stroke-width", 2)
     
     // Draw peripherals
+    const yAxisGenerator = d3.axisLeft()
+        .scale(yScale)
+        .tickValues([100,120,160])
+    const yAxis = bounds.append("g")
+        .call(yAxisGenerator)
+    
+    const xAxisGenerator = d3.axisBottom()
+        .scale(xScale)
+    const xAxis = bounds.append("g")
+        .call(xAxisGenerator)
+            .style("transform", `translateY(${
+                dimensions.boundedHeight
+            }px)`)
+    
 }
 
 drawLines()
