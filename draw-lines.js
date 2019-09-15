@@ -1,19 +1,21 @@
 async function drawLines() {
     // Access data
-    const url = "https://raw.githubusercontent.com/SpecCRA/18_19_scoring_line_chart/master/2018_19_game_pts_data.csv"
-    const dataset  = await d3.csv(url, d3.autoType);
+    const pts_url = "https://raw.githubusercontent.com/SpecCRA/18_19_scoring_line_chart/master/2018_19_game_pts_data.csv"
+    const summary_data_url = "https://raw.githubusercontent.com/SpecCRA/18_19_scoring_line_chart/master/2018-19_celts_monthly_summary_data.csv"
+    const pts_data  = await d3.csv(pts_url, d3.autoType);
+    const summary_data = await d3.csv(summary_data_url, d3.autoType);
     yAccessor = d => +d.points;
     xAccessor = d => d.date;
 
-    console.log(d3.min(dataset, yAccessor))
-    console.log(d3.deviation(dataset, yAccessor))
+    console.log(d3.min(pts_data, yAccessor))
+    console.log(d3.deviation(pts_data, yAccessor))
 
     // Chart dimensions
     let dimensions = {
         width: window.innerWidth * 0.9,
-        height: 450,
+        height: 475,
         margin: {
-            top: 15,
+            top: 25,
             right: 15,
             bottom: 40,
             left: 60,
@@ -40,11 +42,11 @@ async function drawLines() {
 
     // Create scales
     const yScale = d3.scaleLinear()
-        .domain(d3.extent(dataset, yAccessor))
+        .domain(d3.extent(pts_data, yAccessor))
         .range([dimensions.boundedHeight, 0])
 
     const xScale = d3.scaleUtc()
-        .domain(d3.extent(dataset, xAccessor))
+        .domain(d3.extent(pts_data, xAccessor))
         .range([0, dimensions.boundedWidth])
     
     // Line for average points scored code here
@@ -56,11 +58,11 @@ async function drawLines() {
         .x(d => xScale(xAccessor(d)))
         .y(d => yScale(yAccessor(d)));
 
-    const line = bounds.append("path")
-        .attr("d", lineGenerator(dataset))
+    const pointsLine = bounds.append("path")
+        .attr("d", lineGenerator(pts_data))
         .attr("fill", "none")
         .attr("stroke", "#0d6647")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 2.5)
     
     // Draw peripherals
     const yAxisGenerator = d3.axisLeft()
@@ -71,8 +73,8 @@ async function drawLines() {
 		.style("color", "#878787")
 
 	const yAxisLabel = yAxis.append("text")
-		.attr("x", dimensions.width * 0.075)
-		.attr("y", dimensions.height * 0.05)
+		.attr("x", dimensions.width * 0.085)
+		.attr("y", dimensions.height * 0.02)
 		.attr("fill", "black")
 		.style("font-size", "1.4em")
 		.text("Total Points Scored per Game")
@@ -97,11 +99,12 @@ async function drawLines() {
 	
 	// Title
 	const title = wrapper.append("text")
-		.attr("x", (dimensions.width * 0.8))
+		.attr("x", (dimensions.width * 0.75))
 		.attr("y", (dimensions.height * 0.05))
-		.attr("text-anchor", "middle")
+        .attr("text-anchor", "middle")
+        .style("font-family", "sans-serif")
 		.style("font-size", "16px")
-		.text("The 2018-19 Boston Celtics had one of the most disgruntled teams of the season.")
+		.text("The Boston Celtics had one of the most disgruntled teams of the 2018-19 season.")
     
 }
 
